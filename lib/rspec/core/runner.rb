@@ -119,6 +119,8 @@ module RSpec
           end
         end && !@world.non_example_failure
 
+        @configuration.warn_about_loaded_files_not_matching_pattern
+
         success ? 0 : @configuration.failure_exit_code
       end
 

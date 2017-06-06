@@ -1499,6 +1499,26 @@ module RSpec
       end
 
       # @private
+      def warn_about_loaded_files_not_matching_pattern
+        offending_files = loaded_spec_files.reject do |file|
+          # The FNM_EXTGLOB flag makes File.fnmatch? accept the same {a,b} patterns as Dir.glob
+          File.fnmatch?(pattern, file, File::FNM_EXTGLOB)
+        end
+
+        if offending_files.any?
+          warning = <<-WARNING.gsub(/^ +\|/, '')
+            |WARNING: Some of the loaded spec files did not match the `pattern` config option.
+            |         When running RSpec without any arguments, they would be ignored.
+            |
+            |         Files: #{offending_files.inspect}
+            |         Pattern: #{pattern.inspect}
+          WARNING
+
+          RSpec.warn_with warning, :call_site => nil
+        end
+      end
+
+      # @private
       DEFAULT_FORMATTER = lambda { |string| string }
 
       # Formats the docstring output using the block provided.
