@@ -1,6 +1,6 @@
 module FormatterSupport
   def run_example_specs_with_formatter(formatter_option, options={}, &block)
-    output = run_rspec_with_formatter(formatter_option, options.merge(:extra_options => ["spec/rspec/core/resources/formatter_specs.rb"]), &block)
+    output = run_rspec_with_formatter(formatter_option, options.merge(:extra_options => ["--pattern", "**/*_{spec,specs}.rb", "spec/rspec/core/resources/formatter_specs.rb"]), &block)
 
     return output unless options.fetch(:normalize_output, true)
     output = normalize_durations(output)

@@ -55,6 +55,7 @@ module RSpec::Core
 
       def run_formatter_specs
         RSpec.configuration.drb_port = server.drb_port
+        RSpec.configuration.pattern = '**/*_{spec,specs}.rb'
         run_rspec_with_formatter("bisect")
       end
 
