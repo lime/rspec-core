@@ -1505,17 +1505,15 @@ module RSpec
           File.fnmatch?(pattern, file, File::FNM_EXTGLOB)
         end
 
-        if offending_files.any?
-          warning = <<-WARNING.gsub(/^ +\|/, '')
-            |WARNING: Some of the loaded spec files did not match the `pattern` config option.
-            |         When running RSpec without any arguments, they would be ignored.
-            |
-            |         Files: #{offending_files.inspect}
-            |         Pattern: #{pattern.inspect}
-          WARNING
+        return if offending_files.none?
 
-          RSpec.warn_with warning, :call_site => nil
-        end
+        RSpec.warn_with <<-WARNING.gsub(/^ +\|/, ''), :call_site => nil
+          |WARNING: Some of the loaded spec files did not match the `pattern` config option.
+          |         When running RSpec without any arguments, they would be ignored.
+          |
+          |         Files: #{offending_files.inspect}
+          |         Pattern: #{pattern.inspect}
+        WARNING
       end
 
       # @private
